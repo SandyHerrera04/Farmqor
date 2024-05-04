@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gráficas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+        canvas {
+            width: 100%;
+            aspect-ratio: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gráficas</h1>
+
+    <div class="chart-container">
+        <h2>Gráfica de Tipos de Usuario</h2>
+        <canvas id="userTypeChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Gráficas Número del Final</h2>
+        <canvas id="gameCountChart"></canvas>
+    </div>
+
+    <script>
+        // Fetch and create Doughnut chart for user types
+        fetch('/api/tipos-usuario')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('userTypeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(item => item.Tipo_Usuario),
+                    datasets: [{
+                        data: data.map(item => item.Cantidad),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            // Add more colors as needed
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            // Add more borders as needed
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        });
+
+        // Fetch and create Polar Area chart for game count
+        // fetch('/api/final')
+        // .then(response => response.json())
+        // .then(data => {
+        //     const ctx = document.getElementById('gameCountChart').getContext('2d');
+        //     new Chart(ctx, {
+        //         type: 'polarArea',
+        //         data: {
+        //             labels: ['final'],
+        //             datasets: [{
+        //                 data: [data.Cantidad],
+        //                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        //                 borderColor: 'rgba(54, 162, 235, 1)',
+        //                 borderWidth: 1
+        //             }]
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             maintainAspectRatio: true,
+        //             scales: {
+        //                 r: {
+        //                     beginAtZero: true
+        //                 }
+        //             },
+        //             plugins: {
+        //                 legend: {
+        //                     position: 'top',
+        //                 }
+        //             }
+        //         }
+        //     });
+        // });
+        
+ // Fetch and create Pie chart for game count
+        fetch('/api/final')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('gameCountChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(item => item.Final),
+                    datasets: [{
+                        data: data.map(item => item.Cantidad),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            // Add more colors as needed
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            // Add more borders as needed
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
